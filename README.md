@@ -25,6 +25,23 @@ copy .env.example .env
 .venv\Scripts\python scripts/smoke.py
 ```
 
+## If a setup command fails
+
+Windows: install Python from python.org and tick "Add Python to PATH", then open a new
+terminal. Use `.venv\Scripts\python` for every command after the venv.
+
+macOS: use `python3`, not `python`. Install Git and Python from git-scm.com and python.org,
+or let the Xcode Command Line Tools prompt install them. The Ollama app must be opened once
+from Applications before the `ollama` command exists.
+
+Linux: install Git and Python with your package manager, not from those sites. If
+`python3 -m venv .venv` reports that ensurepip is not available, install the venv package
+first (`sudo apt install python3-venv` on Debian or Ubuntu), then run it again. Start the
+local model service with `ollama serve` in its own terminal.
+
+Any system: a terminal reads its program list when it opens, so open a new terminal after
+installing anything.
+
 Day 1 live call (needs one key in `.env`, or a running Ollama):
 
 ```bash
