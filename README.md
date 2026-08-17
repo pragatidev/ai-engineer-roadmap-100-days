@@ -14,7 +14,8 @@ python -m venv .venv
 .venv\Scripts\python -m pip install -r requirements.txt
 ```
 
-On macOS or Linux, use `.venv/bin/python` in place of `.venv\Scripts\python`.
+On macOS or Linux, the first command is `python3 -m venv .venv`, and every command
+after it uses `.venv/bin/python` in place of `.venv\Scripts\python`.
 
 Copy the example env file and set at most one provider key. Or leave the keys
 empty and start Ollama on the host below.
