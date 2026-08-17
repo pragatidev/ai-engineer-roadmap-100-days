@@ -21,6 +21,7 @@ NO_ENGINE = (
 )
 
 
+# MODEL CALL. You ask. It writes. Then this function stops.
 def chat(spec: dict, prompt: str) -> str:
     url = spec["base_url"].rstrip("/") + "/chat/completions"
     headers = {
@@ -39,6 +40,7 @@ def chat(spec: dict, prompt: str) -> str:
     return data["choices"][0]["message"]["content"]
 
 
+# HARNESS. Everything around the model. Pick an engine, time the call, print one row, stop. No tool. No second decide. No check.
 def main() -> int:
     names = configured_engines()
     if not names:
