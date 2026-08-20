@@ -1,4 +1,4 @@
-"""One schema for every engine. Pick the first configured engine and print one row."""
+"""One schema for every engine. Walk every configured engine and print one row each."""
 
 from __future__ import annotations
 
@@ -40,20 +40,24 @@ def chat(spec: dict, prompt: str) -> str:
     return data["choices"][0]["message"]["content"]
 
 
-# HARNESS. Everything around the model. Pick an engine, time the call, print one row, stop. No tool. No second decide. No check.
+def format_row(engine: str, model: str, latency_ms: int | str, reply: str) -> str:
+    return f"{engine} | {model} | {latency_ms} | {reply}"
+
+
+# HARNESS. The harness walks every configured engine, times each call, prints one row per engine, then stops. No tool. No second decide. No check.
 def main() -> int:
     names = configured_engines()
     if not names:
         print(NO_ENGINE)
         return 0
 
-    name = names[0]
-    spec = resolve_engine(name)
-    started = time.perf_counter()
-    reply = chat(spec, PROMPT)
-    latency_ms = int((time.perf_counter() - started) * 1000)
-    snippet = " ".join(reply.split())[:80]
-    print(f"{name} | {spec['model']} | {latency_ms} | {snippet}")
+    for name in names:
+        spec = resolve_engine(name)
+        started = time.perf_counter()
+        reply = chat(spec, PROMPT)
+        latency_ms = int((time.perf_counter() - started) * 1000)
+        snippet = " ".join(reply.split())[:80]
+        print(format_row(name, spec["model"], latency_ms, snippet))
     return 0
 
 
