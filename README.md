@@ -1,5 +1,9 @@
 # AI Engineer Roadmap: 100 Days of Code
 
+The free map of this field lives at https://roadmap.sh. Open it when you
+need to see the terrain and decide where to start. This repository is the
+daily build that sits next to that map.
+
 One living system. One checkable artifact per day for 100 days.
 
 This repo is the course workbench. You clone it once, then commit each day's
