@@ -9,6 +9,25 @@ One living system. One checkable artifact per day for 100 days.
 This repo is the course workbench. You clone it once, then commit each day's
 work here so a hiring manager can clone it and run the smoke check.
 
+## Path map
+
+Fourteen sections in this repository. S1 is done. The rest stay open until their days land on disk.
+
+- [x] S1 AI engineer roadmap: get oriented and run two engines
+- [ ] S2 Build AI agents from scratch: the minimum viable loop
+- [ ] S3 Context engineering
+- [ ] S4 Harness engineering: diagnose, then install a control
+- [ ] S5 Agent Skills, SKILL.md, and compose
+- [ ] S6 MCP course: the tool port
+- [ ] S7 Advanced RAG techniques: a measured workbench
+- [ ] S8 Evals-first
+- [ ] S9 Traces, guardrails, identity
+- [ ] S10 LangGraph tutorial: the same agent on a hireable stack
+- [ ] S11 Multi agent orchestration: writes stay single-threaded
+- [ ] S12 Production ops: one service, not four clouds
+- [ ] S13 AI engineer interview questions and the career layer
+- [ ] S14 Agentic AI projects: capstone and the living repo
+
 ## Setup
 
 ```bash
