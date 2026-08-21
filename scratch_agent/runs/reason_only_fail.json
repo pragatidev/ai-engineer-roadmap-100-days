@@ -1,0 +1,13 @@
+{
+  "question": "What is 347 times 19?",
+  "action": {
+    "kind": "call_tool",
+    "name": "multiply",
+    "arguments": {
+      "a": 347,
+      "b": 19
+    }
+  },
+  "tool_ran": false,
+  "note": "no tool ran because this folder has no tool yet"
+}

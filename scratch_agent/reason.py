@@ -76,4 +76,31 @@ def reason(question: str) -> Action:
 
 
 if __name__ == "__main__":
-    print(reason("What is 347 times 19?"))
+    question = "What is 347 times 19?"
+    action = reason(question)
+    print(action)
+    if isinstance(action, CallTool):
+        logged = {
+            "kind": "call_tool",
+            "name": action.name,
+            "arguments": action.arguments,
+        }
+    elif isinstance(action, Stop):
+        logged = {"kind": "stop", "answer": action.answer}
+    else:
+        raise TypeError(f"unexpected action type: {type(action)!r}")
+    payload = {
+        "question": question,
+        "action": logged,
+        "tool_ran": False,
+        "note": "no tool ran because this folder has no tool yet",
+    }
+    runs_dir = Path(__file__).resolve().parent / "runs"
+    runs_dir.mkdir(parents=True, exist_ok=True)
+    out = runs_dir / "reason_only_fail.json"
+    out.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
