@@ -18,6 +18,11 @@ def decide(question, seen):
 
 def loop(question):
     """Run reason, pending, then decide, in that order."""
+    # Control flow to keep:
+    # reason returns the next action.
+    # If that action names a tool, look the name up in TOOLS and call the worker.
+    # Pass what the worker returned into decide as seen.
+    # If the action is stop, return the answer.
     first = reason(question)
     tool_slot = pending()
     second = decide(question, seen=tool_slot)
