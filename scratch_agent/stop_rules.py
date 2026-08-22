@@ -1,7 +1,6 @@
 """Named hard-stop checks. Each returns a reason string or None.
 
-Do not import this module from loop.py yet. The loop still exits by
-type change and by the unknown-tool break. These functions name why.
+loop.py imports this module and consults the functions after every hop.
 """
 
 from __future__ import annotations
