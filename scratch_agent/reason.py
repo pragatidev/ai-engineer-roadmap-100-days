@@ -24,6 +24,16 @@ SCHEMA = (
     "If the user asks to multiply, return call_tool, not the product."
 )
 
+DECIDE_SCHEMA = (
+    "Reply with one JSON object only. No markdown. No other text. "
+    "Two objects are legal: "
+    '{"kind": "call_tool", "name": "<tool name>", "arguments": {<name to value>}} '
+    'or {"kind": "stop", "answer": "<the answer you would show a person>"}. '
+    "The user message includes seen: the tool result. "
+    "If seen answers the question, return stop with that answer. "
+    "Do not call the same tool again for a result you already have."
+)
+
 NO_ENGINE = (
     "No engine is configured. Copy .env.example to .env and set one API key, "
     "or start Ollama, then run this again."
@@ -44,18 +54,25 @@ def action_from_model_text(text: str) -> Action:
     raise ValueError(f"unknown kind: {kind}")
 
 
-def _chat(spec: dict, question: str) -> str:
+def _chat(spec: dict, question: str, seen=None) -> str:
     url = spec["base_url"].rstrip("/") + "/chat/completions"
     headers = {
         "Authorization": f"Bearer {spec['api_key']}",
         "Content-Type": "application/json",
     }
     headers.update(spec.get("headers") or {})
+    if seen is None:
+        user_content = question
+    else:
+        user_content = (
+            question + "\n" + "seen: " + json.dumps(seen, ensure_ascii=False)
+        )
+    system_content = SCHEMA if seen is None else DECIDE_SCHEMA
     body = {
         "model": spec["model"],
         "messages": [
-            {"role": "system", "content": SCHEMA},
-            {"role": "user", "content": question},
+            {"role": "system", "content": system_content},
+            {"role": "user", "content": user_content},
         ],
     }
     with httpx.Client(timeout=60.0) as client:
@@ -72,6 +89,15 @@ def reason(question: str) -> Action:
         raise RuntimeError(NO_ENGINE)
     spec = resolve_engine(names[0])
     reply = _chat(spec, question)
+    return action_from_model_text(reply)
+
+
+def decide(question, seen):
+    names = configured_engines()
+    if not names:
+        raise RuntimeError(NO_ENGINE)
+    spec = resolve_engine(names[0])
+    reply = _chat(spec, question, seen)
     return action_from_model_text(reply)
 
 

@@ -19,8 +19,13 @@ def read_file(path: str):
         return {"error": "missing file"}
 
 
+def multiply(a, b):
+    return int(a) * int(b)
+
+
 TOOLS = {
     "read_file": read_file,
+    "multiply": multiply,
 }
 
 
