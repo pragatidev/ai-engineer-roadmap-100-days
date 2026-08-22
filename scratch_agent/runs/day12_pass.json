@@ -1,0 +1,24 @@
+{
+  "question": "What is 347 times 19?",
+  "hops": [
+    {
+      "kind": "call_tool",
+      "name": "multiply",
+      "arguments": {
+        "a": 347,
+        "b": 19
+      }
+    },
+    {
+      "kind": "seen",
+      "value": 6593
+    },
+    {
+      "kind": "stop",
+      "answer": "6593"
+    }
+  ],
+  "tool_ran": true,
+  "stop_reason": "done",
+  "answer": "6593"
+}

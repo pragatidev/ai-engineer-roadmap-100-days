@@ -74,7 +74,7 @@ def _hop_to_json(hop):
 
 if __name__ == "__main__":
     question = "What is 347 times 19?"
-    hops, coded = loop(question, max_steps=2)
+    hops, coded = loop(question)
     serialized = [_hop_to_json(hop) for hop in hops]
     payload = {
         "question": question,
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     print(json.dumps(payload, indent=2, ensure_ascii=False))
     runs_dir = Path(__file__).resolve().parent / "runs"
     runs_dir.mkdir(parents=True, exist_ok=True)
-    out = runs_dir / "max_steps_run.json"
+    out = runs_dir / "day12_pass.json"
     out.write_text(
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
