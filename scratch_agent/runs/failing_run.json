@@ -1,0 +1,19 @@
+{
+  "question": "What is 347 divided by 19?",
+  "hops": [
+    {
+      "kind": "call_tool",
+      "name": "divide",
+      "arguments": {
+        "a": 347,
+        "b": 19
+      }
+    },
+    {
+      "kind": "error",
+      "error": "unknown tool",
+      "name": "divide"
+    }
+  ],
+  "tool_ran": false
+}

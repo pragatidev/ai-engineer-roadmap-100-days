@@ -20,8 +20,8 @@ SCHEMA = (
     "Two objects are legal: "
     '{"kind": "call_tool", "name": "<tool name>", "arguments": {<name to value>}} '
     'or {"kind": "stop", "answer": "<the answer you would show a person>"}. '
-    "The only tool is multiply. It takes numbers a and b. "
-    "If the user asks to multiply, return call_tool, not the product."
+    "The tools are multiply and divide. Each takes numbers a and b. "
+    "If the user asks to multiply or divide, return call_tool, not the result."
 )
 
 DECIDE_SCHEMA = (

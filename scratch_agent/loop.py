@@ -17,6 +17,8 @@ from scratch_agent.registry import TOOLS
 
 def pending(action):
     """Hop 2. Look the name up in TOOLS and call that worker."""
+    if action.name not in TOOLS:
+        return {"kind": "error", "error": "unknown tool", "name": action.name}
     worker = TOOLS[action.name]
     return worker(**action.arguments)
 
@@ -33,6 +35,8 @@ def loop(question):
     while isinstance(action, CallTool):
         seen = pending(action)
         hops.append(seen)
+        if isinstance(seen, dict) and seen.get("kind") == "error":
+            break
         action = decide(question, seen=seen)
         hops.append(action)
     return hops
@@ -43,24 +47,27 @@ def _hop_to_json(hop):
         return {"kind": "call_tool", "name": hop.name, "arguments": hop.arguments}
     if isinstance(hop, Stop):
         return {"kind": "stop", "answer": hop.answer}
+    if isinstance(hop, dict) and hop.get("kind") == "error":
+        return hop
     return {"kind": "seen", "value": hop}
 
 
 if __name__ == "__main__":
-    question = "What is 347 times 19?"
+    question = "What is 347 divided by 19?"
     hops = loop(question)
     serialized = [_hop_to_json(hop) for hop in hops]
-    last = hops[-1]
     payload = {
         "question": question,
         "hops": serialized,
         "tool_ran": any(item["kind"] == "seen" for item in serialized),
-        "answer": last.answer,
     }
+    last = hops[-1]
+    if isinstance(last, Stop):
+        payload["answer"] = last.answer
     print(json.dumps(payload, indent=2, ensure_ascii=False))
     runs_dir = Path(__file__).resolve().parent / "runs"
     runs_dir.mkdir(parents=True, exist_ok=True)
-    out = runs_dir / "first_success.json"
+    out = runs_dir / "failing_run.json"
     out.write_text(
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
