@@ -1,0 +1,33 @@
+{
+  "question": "What is 41 times 17?",
+  "expected": "697",
+  "hops": [
+    {
+      "kind": "call_tool",
+      "name": "multiply",
+      "arguments": {
+        "a": 347,
+        "b": 19
+      }
+    },
+    {
+      "kind": "seen",
+      "value": 6593
+    },
+    {
+      "kind": "stop",
+      "answer": "6593"
+    }
+  ],
+  "stop_reason": "done",
+  "warehouse": [
+    "scratch_agent/README.md",
+    "scratch_agent/loop.py",
+    "scratch_agent/reason.py",
+    "scratch_agent/registry.py",
+    "scratch_agent/actions.py"
+  ],
+  "repeat_count": 8,
+  "prompt_chars": 81064,
+  "answer": "6593"
+}
