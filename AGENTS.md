@@ -2,7 +2,6 @@
 
 This file is a map of the workbench, not a pasted encyclopedia.
 Rules live in the files that own them. Do not copy those rules here.
-Stub now. Fill in S3.
 
 ## Now
 
@@ -27,12 +26,16 @@ Four tests. Green with no key and no network.
 .env.example
 Provider key names. Set at most one, or use the local Ollama host. Never commit a filled .env.
 
+scratch_agent/README.md
+The loop is done. Point here. Do not paste the loop.
+
+context/README.md
+The law of this section. Point here. Do not paste the law.
+
 ## Later rooms
 
-These rooms do not exist yet. Do not create them today. Empty rooms stay empty until those days. Fill this map in S3.
+These rooms do not exist yet. Do not create them today. Empty rooms stay empty until those days.
 
-from-scratch agent loop
-context engineering
 harness with guides and sensors
 Agent Skills that compose
 MCP server
