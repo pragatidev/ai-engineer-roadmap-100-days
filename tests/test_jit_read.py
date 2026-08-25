@@ -92,3 +92,44 @@ def test_preload_all_costs_more_than_any_single_read():
     )
     assert whole["chars"] > one["chars"]
     assert whole["tokens_approx"] == whole["chars"] // 4
+
+
+TASK = "Read context/README.md and tell me what the attention budget is."
+
+
+def test_compare_measures_both_sides_of_the_same_task():
+    module = load_module()
+    payload = module.compare(TASK)
+    assert payload["task"] == TASK
+    assert payload["jit_named"] == "context/README.md"
+    # Same counting rule on both sides: characters divided by four.
+    assert payload["preload_tokens"] == payload["preload_chars"] // 4
+    assert payload["jit_tokens"] == payload["jit_chars"] // 4
+    # Same five files in play; the just in time side skipped the other four.
+    assert len(payload["skipped"]) == len(module.MAP) - 1
+    assert "context/README.md" not in payload["skipped"]
+    # The gap is a subtraction, not a claim.
+    assert payload["saved_tokens"] == (
+        payload["preload_tokens"] - payload["jit_tokens"]
+    )
+    assert payload["saved_tokens"] > 0
+
+
+def test_append_counts_adds_two_sections_and_keeps_what_was_there(tmp_path, monkeypatch):
+    module = load_module()
+    page = tmp_path / "context" / "token_counts.md"
+    page.parent.mkdir(parents=True)
+    page.write_text("# Token counts\n\n## Before\n\nchars: 20\n", encoding="utf-8")
+    monkeypatch.setattr(module, "REPO_ROOT", tmp_path)
+
+    module.append_counts(module.compare(TASK))
+    written = page.read_text(encoding="utf-8")
+
+    # Append mode: the earlier count is still there.
+    assert written.startswith("# Token counts\n\n## Before\n\nchars: 20\n")
+    assert "## Preloaded" in written
+    assert "job: dump" in written
+    assert "## Just in time" in written
+    assert "job: read on demand" in written
+    assert "named: context/README.md" in written
+    assert "task: " + TASK in written

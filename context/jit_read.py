@@ -147,6 +147,63 @@ def preload_all() -> dict:
     return {"chars": len(blob), "tokens_approx": len(blob) // 4}
 
 
+def compare(task: str) -> dict:
+    """Both strategies on one task string, and the gap between them.
+
+    Fairness is the whole experiment. Same task, same counting rule
+    (characters divided by four), same five files in the map. The only
+    thing that changes is when the bodies get loaded.
+    """
+    preloaded = preload_all()
+    just_in_time = jit_read(task)
+    return {
+        "task": task,
+        "preload_chars": preloaded["chars"],
+        "preload_tokens": preloaded["tokens_approx"],
+        "jit_named": just_in_time["named"],
+        "jit_chars": just_in_time["chars"],
+        "jit_tokens": just_in_time["tokens_approx"],
+        "skipped": just_in_time["skipped"],
+        "saved_tokens": preloaded["tokens_approx"] - just_in_time["tokens_approx"],
+    }
+
+
+def append_counts(payload: dict) -> None:
+    """Write the two counts onto the end of context/token_counts.md.
+
+    Append mode, not write mode. Every earlier count in that file stays
+    exactly where it is.
+    """
+    page = REPO_ROOT / "context" / "token_counts.md"
+    block = (
+        "\n## Preloaded\n\n"
+        "files: %s\n"
+        "chars: %s\n"
+        "tokens_approx: %s\n"
+        "job: dump\n"
+        "\n## Just in time\n\n"
+        "named: %s\n"
+        "chars: %s\n"
+        "tokens_approx: %s\n"
+        "skipped: %s\n"
+        "job: read on demand\n"
+        "\ntask: %s\n"
+    ) % (
+        len(MAP),
+        payload["preload_chars"],
+        payload["preload_tokens"],
+        payload["jit_named"],
+        payload["jit_chars"],
+        payload["jit_tokens"],
+        ", ".join(payload["skipped"]),
+        payload["task"],
+    )
+    with open(page, "a", encoding="utf-8", newline="\n") as handle:
+        handle.write(block)
+
+
 if __name__ == "__main__":
     TASK = "Read context/README.md and tell me what the attention budget is."
-    print(json.dumps(jit_read(TASK), indent=2))
+    payload = compare(TASK)
+    print(json.dumps(payload, indent=2))
+    append_counts(payload)

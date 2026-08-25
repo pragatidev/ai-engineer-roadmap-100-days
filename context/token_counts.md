@@ -47,3 +47,20 @@ chars: 422
 tokens_approx: 105
 line: 500
 goal: What is 347 times 19?
+
+## Preloaded
+
+files: 5
+chars: 7734
+tokens_approx: 1933
+job: dump
+
+## Just in time
+
+named: context/README.md
+chars: 282
+tokens_approx: 70
+skipped: AGENTS.md, context/compaction.py, context/token_counts.md, scratch_agent/README.md
+job: read on demand
+
+task: Read context/README.md and tell me what the attention budget is.
