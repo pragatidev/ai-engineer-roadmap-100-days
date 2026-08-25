@@ -18,8 +18,6 @@ a guess with no source
 a rule that lives in the file that owns it
 anything cheap to recompute
 
-The write path arrives next lecture.
-
 ## Log
 
 artifact path: context/runs/day16_note_run.json holds the day 16 run

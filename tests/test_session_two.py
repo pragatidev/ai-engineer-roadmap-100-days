@@ -70,7 +70,7 @@ def test_session_one_does_not_write_the_same_line_twice(tmp_path):
     module = load_module()
     scripted_loop(module)
     module.TRANSCRIPT = tmp_path / "day18_session_one.json"
-    module.read_notes = lambda: "artifact path: " + module.NOTE_LINE
+    module.read_notes = lambda: module.WRITTEN_LINE
     module.write_note = lambda *a, **k: pytest.fail("the guard let a duplicate through")
     assert module.session_one() == {"written": False, "reason": "already noted"}
     assert module.TRANSCRIPT.exists() is True
@@ -95,5 +95,26 @@ def test_session_two_sees_exactly_two_chunks_and_no_transcript(tmp_path):
 
 def test_session_two_reads_the_line_back_out_of_the_log(tmp_path):
     module = load_module()
-    module.read_notes = lambda: "artifact path: " + module.NOTE_LINE
-    assert module.session_two() == "artifact path: " + module.NOTE_LINE
+    module.read_notes = lambda: module.WRITTEN_LINE
+    assert module.session_two() == (module.WRITTEN_LINE, module.WRITTEN_LINE)
+
+
+DAY_16 = "artifact path: context/runs/day16_note_run.json holds the day 16 run"
+
+
+def test_the_old_reader_answers_with_the_wrong_day_once_the_log_has_two(tmp_path):
+    module = load_module()
+    module.read_notes = lambda: DAY_16 + "\n" + module.WRITTEN_LINE
+    first_path_line, recovered = module.session_two()
+    assert first_path_line == DAY_16
+    assert recovered == module.WRITTEN_LINE
+
+
+def test_answer_about_refuses_a_path_line_that_does_not_carry_the_needle():
+    module = load_module()
+    assert module.answer_about([DAY_16], module.NEEDLE) == "unknown"
+
+
+def test_answer_about_ignores_a_needle_line_with_no_run_artifact():
+    module = load_module()
+    assert module.answer_about(["the day 18 session went fine"], module.NEEDLE) == "unknown"
