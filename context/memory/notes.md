@@ -24,3 +24,5 @@ The write path arrives next lecture.
 
 artifact path: context/runs/day16_note_run.json holds the day 16 run
 source: context/memory/write_note.py
+artifact path: context/runs/day18_session_one.json holds the day 18 session one run
+source: context/memory/session_two.py
