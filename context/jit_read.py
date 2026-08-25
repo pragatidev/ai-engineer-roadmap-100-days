@@ -18,11 +18,21 @@ Preloading still wins when the set is small, fixed, and every turn needs
 all of it. So the decision is two questions, and both must be answered
 before you reach for either shape.
 
-Nothing here fetches a file yet. This is the contract the read tool obeys
-in the next lecture.
+MAP below is that index. named_file decides. jit_read does the read, and
+prints what it skipped, because restraint is invisible unless you print it.
 """
 
 from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scratch_agent.registry import TOOLS
 
 RULE = "Read a file when the task names it, not before."
 
@@ -78,7 +88,8 @@ def explain(task_names_file: bool, every_turn_needs_it: bool) -> str:
     return "just in time: the task does not name it, so do not read it"
 
 
-def main() -> None:
+def print_the_rule() -> None:
+    """The day 16 printout. Still here; today's __main__ runs the read instead."""
     print("RULE")
     print(RULE)
     print("THE TEST")
@@ -89,5 +100,53 @@ def main() -> None:
         print("names=%s every_turn=%s -> %s" % (names, every, explain(names, every)))
 
 
+# The map. Identifiers and one line about what lives where. Never bodies.
+MAP = {
+    "AGENTS.md": "map of the workbench",
+    "context/README.md": "the law of this section",
+    "context/token_counts.md": "the counts from this section",
+    "scratch_agent/README.md": "what the loop is",
+    "context/compaction.py": "the compaction rule and step",
+}
+
+
+def named_file(task: str):
+    """The decider. The first mapped path the task actually mentions, or None."""
+    for path in MAP:
+        if path in task:
+            return path
+    return None
+
+
+def jit_read(task: str) -> dict:
+    """Read the one file the task names. Report what was skipped either way."""
+    path = named_file(task)
+    if path is None:
+        return {
+            "task": task,
+            "named": None,
+            "read": None,
+            "skipped": sorted(MAP),
+            "chars": 0,
+            "tokens_approx": 0,
+        }
+    body = TOOLS["read_file"](path)
+    return {
+        "task": task,
+        "named": path,
+        "read": path,
+        "skipped": sorted(key for key in MAP if key != path),
+        "chars": len(body),
+        "tokens_approx": len(body) // 4,
+    }
+
+
+def preload_all() -> dict:
+    """The other side of the argument. Every body in the map, all at once."""
+    blob = "".join(TOOLS["read_file"](path) for path in MAP)
+    return {"chars": len(blob), "tokens_approx": len(blob) // 4}
+
+
 if __name__ == "__main__":
-    main()
+    TASK = "Read context/README.md and tell me what the attention budget is."
+    print(json.dumps(jit_read(TASK), indent=2))
