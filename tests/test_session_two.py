@@ -1,6 +1,8 @@
 """context/memory/session_two.py. Offline, no model call, no real notes.md, no real transcript."""
 
 import importlib.util
+import json
+import textwrap
 from pathlib import Path
 
 import pytest
@@ -118,3 +120,31 @@ def test_answer_about_refuses_a_path_line_that_does_not_carry_the_needle():
 def test_answer_about_ignores_a_needle_line_with_no_run_artifact():
     module = load_module()
     assert module.answer_about(["the day 18 session went fine"], module.NEEDLE) == "unknown"
+
+
+def test_the_receipt_witnesses_the_transcript_before_the_delete(tmp_path, capsys):
+    """transcript_written is read off the disk BEFORE throw_away, and prints next to it.
+
+    Both halves of the pair matter: true then false is a witnessed deletion, and the
+    order the two fields print in is the order the lecture reads them out loud.
+    """
+    module = load_module()
+    body = (REPO_ROOT / "context" / "memory" / "session_two.py").read_text(
+        encoding="utf-8"
+    ).split('if __name__ == "__main__":')[1]
+
+    target = tmp_path / "day18_session_one.json"
+    target.write_text("{}\n", encoding="utf-8")
+    module.TRANSCRIPT = target
+    module.session_one = lambda: {"written": True, "line": module.WRITTEN_LINE}
+    module.session_two = lambda: (DAY_16, module.WRITTEN_LINE)
+
+    exec(compile(textwrap.dedent(body), "session_two_main", "exec"), module.__dict__)
+    receipt = json.loads(capsys.readouterr().out)
+
+    keys = list(receipt)
+    assert keys.index("transcript_written") == keys.index("transcript_path") + 1
+    assert keys.index("transcript_exists") == keys.index("transcript_written") + 1
+    assert receipt["transcript_written"] is True
+    assert receipt["transcript_exists"] is False
+    assert target.exists() is False

@@ -83,6 +83,7 @@ def session_two():
 
 if __name__ == "__main__":
     note = session_one()
+    transcript_written = TRANSCRIPT.exists()
     transcript_exists = throw_away()
     first_path_line, recovered_line = session_two()
     print(
@@ -91,6 +92,7 @@ if __name__ == "__main__":
                 "question": QUESTION,
                 "note": note,
                 "transcript_path": str(TRANSCRIPT).replace("\\", "/"),
+                "transcript_written": transcript_written,
                 "transcript_exists": transcript_exists,
                 "sources": ["AGENTS.md", "context/memory/notes.md"],
                 "first_path_line": first_path_line,
