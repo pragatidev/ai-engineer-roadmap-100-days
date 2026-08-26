@@ -11,12 +11,12 @@ work here so a hiring manager can clone it and run the smoke check.
 
 ## Path map
 
-Fourteen sections in this repository. S1 and S2 are done. The rest stay open until their days land on disk.
+Fourteen sections in this repository. S1, S2, and S3 are done. The rest stay open until their days land on disk.
 
 - [x] S1 AI engineer roadmap: get oriented and run two engines
 - [x] S2 Build AI agents from scratch: the minimum viable loop
 
-- [ ] S3 Context engineering
+- [x] S3 Context engineering
 - [ ] S4 Harness engineering: diagnose, then install a control
 - [ ] S5 Agent Skills, SKILL.md, and compose
 - [ ] S6 MCP course: the tool port

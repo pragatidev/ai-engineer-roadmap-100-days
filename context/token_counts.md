@@ -64,3 +64,26 @@ skipped: AGENTS.md, context/compaction.py, context/token_counts.md, scratch_agen
 job: read on demand
 
 task: Read context/README.md and tell me what the attention budget is.
+
+## Alive before
+
+chars: 16949
+tokens_approx: 4237
+question: What is 41 times 17?
+
+## Alive after
+
+chars: 398
+tokens_approx: 99
+line: 500
+expected: 697
+answer: 697
+compacted: true
+notes_written: true
+map: AGENTS.md
+map_job: point
+controls: compact, notes, a map
+short_demo: false
+death_rerun: false
+isolation_on_list: false
+artifact path: context/runs/alive.json
