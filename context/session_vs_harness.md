@@ -1,30 +1,31 @@
 # Session versus harness
 
-You can recreate the harness. You cannot recreate a lost fact.
+One question sorts every file in this repo.
+If it disappeared right now, what command brings it back?
 
-## Durable
-
-context/memory/notes.md
-The only copy of facts observed during a run.
+## A command brings it back
 
 AGENTS.md
-The map a fresh reader starts from.
-
-## Disposable
-
-context/memory/recover.py
-Source code. Version control brings it back in one command.
-
 context/memory/write_note.py
-Source code. Version control brings it back in one command.
-
+context/memory/recover.py
 context/memory/session_two.py
-Source code. Version control brings it back in one command.
+context/compaction.py
+
+git checkout -- <path>. These are source, they are committed, and git holds a copy.
+Losing one costs the seconds it takes to type the command.
+
+## No command brings it back, and that is fine
 
 context/runs/day18_session_one.json
-The transcript we delete on purpose.
 
-## Test
+The session one transcript. Git never saw it, so git cannot return it.
+It did not matter: its one fact was written into context/memory/notes.md before the delete.
 
-Delete it and ask what command brings it back.
-If a command brings it back it is disposable.
+## No command brings it back, and that is the whole risk
+
+the next line under ## Log in context/memory/notes.md
+
+A fact you have observed and have not written down yet.
+No checkout reaches it, because nothing is holding a copy.
+The lines already in notes.md are safe only because write_note.py wrote them and a commit kept them.
+That write step is the durable half. Everything above it is replaceable.
