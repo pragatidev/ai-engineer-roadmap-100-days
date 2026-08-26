@@ -1,0 +1,31 @@
+{
+  "job": "What is 41 times 17?",
+  "constraint that must hold": "A child starts clean and gets a brief, not a trace.",
+  "artifact path": "context/runs/clean_child.json",
+  "parent_messages": 6,
+  "child_messages": 1,
+  "child_user_content": "job: What is 41 times 17?\nconstraint that must hold: A child starts clean and gets a brief, not a trace.\nartifact path: context/runs/clean_child.json",
+  "parent_has_trace": true,
+  "parent_trace_in_child": false,
+  "spent_tool_in_child": false,
+  "hops": [
+    {
+      "kind": "call_tool",
+      "name": "multiply",
+      "arguments": {
+        "a": 41,
+        "b": 17
+      }
+    },
+    {
+      "kind": "seen",
+      "value": 697
+    },
+    {
+      "kind": "stop",
+      "answer": "697"
+    }
+  ],
+  "stop_reason": "done",
+  "answer": "697"
+}
