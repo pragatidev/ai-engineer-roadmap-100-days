@@ -1,0 +1,13 @@
+{
+  "job": "What is 41 times 17?",
+  "constraint that must hold": "A child starts clean and gets a brief, not a trace.",
+  "artifact path": "context/runs/polluted_child.json",
+  "parent_messages": 6,
+  "child_messages": 7,
+  "child_user_content": "job: What is 41 times 17?\nconstraint that must hold: A child starts clean and gets a brief, not a trace.\nartifact path: context/runs/polluted_child.json",
+  "parent_has_trace": true,
+  "parent_trace_in_child": true,
+  "spent_tool_in_child": true,
+  "leaked": "seen: 6593",
+  "answer": "6593"
+}
