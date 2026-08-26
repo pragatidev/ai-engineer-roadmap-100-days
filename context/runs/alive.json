@@ -1,0 +1,76 @@
+{
+  "question": "What is 41 times 17?",
+  "expected": 697,
+  "answer": "697",
+  "stop_reason": "done",
+  "hops": [
+    {
+      "kind": "call_tool",
+      "name": "multiply",
+      "arguments": {
+        "a": 41,
+        "b": 17
+      }
+    },
+    {
+      "kind": "seen",
+      "value": 697
+    },
+    {
+      "kind": "stop",
+      "answer": "697"
+    }
+  ],
+  "line": 500,
+  "chars_before": 16949,
+  "tokens_before": 4237,
+  "chars_after": 398,
+  "tokens_after": 99,
+  "compacted": true,
+  "keep_present": [
+    "instructions",
+    "tool names",
+    "current goal",
+    "recent working set"
+  ],
+  "drop_present": [],
+  "lives_in_slot": true,
+  "notes_written": true,
+  "note_rows": [
+    {
+      "written": true,
+      "line": "current goal and state: quiet question What is 41 times 17? still in the window after the cut"
+    },
+    {
+      "written": true,
+      "line": "discovered fact that cost work: AGENTS.md points at context/README.md and does not paste the law"
+    },
+    {
+      "written": true,
+      "line": "constraint that must hold: one control is not a set; isolation is not the third name on this list"
+    },
+    {
+      "written": true,
+      "line": "decision plus reason: write notes before maybe_compact so dropped results do not take the facts with them"
+    },
+    {
+      "written": true,
+      "line": "artifact path: context/runs/alive.json holds the alive run"
+    }
+  ],
+  "map": "AGENTS.md",
+  "map_job": "point",
+  "short_demo": false,
+  "death_rerun": false,
+  "controls": [
+    "compact",
+    "notes",
+    "a map"
+  ],
+  "isolation_on_list": false,
+  "artifact path": "context/runs/alive.json",
+  "tool names": [
+    "multiply",
+    "read_file"
+  ]
+}
